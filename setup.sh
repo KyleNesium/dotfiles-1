@@ -64,29 +64,47 @@ install_showallfiles() {
 }
 
 ################################################################################
-# user input
+# user input (skip in non-interactive mode or pre-set via env)
 ################################################################################
-read -p 'git-user: ' git_user
-read -p 'git-email: ' git_email
-read -p 'git-gpg: ' git_gpg
+if [[ -t 0 ]]; then
+  read -p 'git-user: ' git_user
+  read -p 'git-email: ' git_email
+  read -p 'git-gpg: ' git_gpg
+else
+  git_user="${GIT_USER:-$(git config --global user.name 2>/dev/null || true)}"
+  git_email="${GIT_EMAIL:-$(git config --global user.email 2>/dev/null || true)}"
+  git_gpg="${GIT_GPG:-$(git config --global user.signingkey 2>/dev/null || true)}"
+fi
 
 ###############################################################################
-# symlink dropbox / dotfiles
+# symlink dotfiles
 ###############################################################################
 mkdir -p ~/.docker ~/".vim/pack/${USER}/opt"
-curl -L#O https://github.com/dracula/vim/archive/master.zip
-unzip master.zip
-mv vim-master ~/".vim/pack/${USER}/opt/dracula"
-rm master.zip
 
-for f in ~/Dropbox/dotfiles/.*; do
-  if [[ "${f: -1}" == "." ]]; then
-    continue
-  fi
-  ln -sf "${f}" ~
-done
-chmod 600 ~/.ssh/id_*
-chmod 644 ~/.ssh/*.pub
+if [[ ! -d ~/".vim/pack/${USER}/opt/dracula" ]]; then
+  curl -L#O https://github.com/dracula/vim/archive/master.zip
+  unzip -q master.zip
+  mv vim-master ~/".vim/pack/${USER}/opt/dracula"
+  rm master.zip
+fi
+
+# symlink Dropbox dotfiles if available (macOS)
+if [[ -d ~/Dropbox/dotfiles ]]; then
+  for f in ~/Dropbox/dotfiles/.*; do
+    if [[ "${f: -1}" == "." ]]; then
+      continue
+    fi
+    ln -sf "${f}" ~
+  done
+fi
+
+# fix ssh key permissions if they exist
+if ls ~/.ssh/id_* &>/dev/null; then
+  chmod 600 ~/.ssh/id_*
+fi
+if ls ~/.ssh/*.pub &>/dev/null; then
+  chmod 644 ~/.ssh/*.pub
+fi
 
 ################################################################################
 # install various tools
@@ -138,15 +156,17 @@ fi
 ################################################################################
 # setup bash_completion
 ################################################################################
-if [[ ! -f "/usr/local/bin/bash" ]]; then
-  consolelog "installing bash..."
-  install_bash
-  chsh -s /usr/local/bin/bash
-fi
+if [[ "${uname}" == "Darwin" ]]; then
+  if [[ ! -f "/usr/local/bin/bash" ]]; then
+    consolelog "installing bash..."
+    install_bash
+    chsh -s /usr/local/bin/bash
+  fi
 
-if [[ ! -f /usr/local/share/bash-completion/bash_completion ]]; then
-  consolelog "bash-completion not found. installing..."
-  install_bash_completion
+  if [[ ! -f /usr/local/share/bash-completion/bash_completion ]]; then
+    consolelog "bash-completion not found. installing..."
+    install_bash_completion
+  fi
 fi
 
 if [[ ! -d ~/.bash_completion.d ]]; then
@@ -164,8 +184,10 @@ if [[ ! -d ~/.bash_completion.d ]]; then
   fi
 fi
 
-install_screenshots
-install_showallfiles
+if [[ "${uname}" == "Darwin" ]]; then
+  install_screenshots
+  install_showallfiles
+fi
 
 ################################################################################
 # textmate (macos)
@@ -228,4 +250,6 @@ fi
 ################################################################################
 # install global as to not be affected by local dirt
 ################################################################################
-sudo -H pip3 install ansible awscli boto3
+if command -v pip3 > /dev/null; then
+  sudo -H pip3 install ansible awscli boto3
+fi
