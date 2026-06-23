@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.native-instruments.com)",
+      "WebFetch(domain:support.native-instruments.com)",
+      "WebFetch(domain:ahujasid.com)",
+      "mcp__ableton__*",
+      "Skill(update-config)",
+      "Skill(producer-mode)",
+      "Skill(mixer-doctor)",
+      "Skill(midi-cleanup)",
+      "Skill(reference-match)",
+      "Skill(groove-builder)",
+      "Skill(chord-pro)",
+      "Skill(arrangement-coach)",
+      "Skill(tempo-coach)",
+      "Skill(sound-designer)",
+      "Skill(sidechain-setup)",
+      "Skill(mastering-prep)",
+      "Skill(vocal-chain)",
+      "Skill(ableton-snapshot)",
+      "Skill(ableton-debug)",
+      "Skill(ableton-export)",
+      "Skill(ableton-init)"
+    ]
+  }
+}

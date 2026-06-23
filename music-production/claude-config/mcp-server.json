@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "ableton": {
+      "type": "stdio",
+      "command": "/home/kyle/.local/bin/uv",
+      "args": [
+        "run",
+        "--quiet",
+        "--directory",
+        "/home/kyle/workspace/ableton-mcp",
+        "ableton-mcp"
+      ],
+      "env": {}
+    }
+  }
+}
