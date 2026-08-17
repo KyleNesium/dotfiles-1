@@ -10,7 +10,10 @@
         "/home/kyle/workspace/ableton-mcp",
         "ableton-mcp"
       ],
-      "env": {}
+      "env": {
+        "ABLETON_MCP_DISABLE_TELEMETRY": "1",
+        "DISABLE_TELEMETRY": "1"
+      }
     }
   }
 }
