@@ -47,6 +47,8 @@ If a tool is unavailable, the user is on a different MCP server. Ask which one.
 - [SAMPLES.md](SAMPLES.md) — indexed sample/preset library inventory + creative usage playbook
 - [MCP-CAPABILITIES.md](MCP-CAPABILITIES.md) — what the MCP can/can't do, gotchas, workflow patterns
 - [MCP-SMOKE-TEST.md](MCP-SMOKE-TEST.md) — protocol to verify all 28 MCP tools work after a deploy or restart
+- [SOUND-DESIGN.md](SOUND-DESIGN.md) — Serum 2 / Drift / Wavetable synthesis by role (lead/bass/pad/pluck/arp), randomization techniques, layering strategies
+- [MIXING-PRACTICES.md](MIXING-PRACTICES.md) — **READ BEFORE EDITING EXISTING PROJECTS.** Channel-level best practices, gain staging, EQ/compression/sidechain, the "new element entering an existing mix" protocol. Captures rules I broke on dipper.als.
 - [genres/INDEX.md](genres/INDEX.md) — 22 genre reference docs (history, production DNA, tempo/key, reference artists/tracks, library-pack hints). Read the relevant genre file when user names a genre.
 - [identity/INDEX.md](identity/INDEX.md) — **Kyle's artist brand layer**: producer tag, signature move, sound bank manifest, master chain spec, moments library. Read [identity/ARTIST-PROFILE.md](identity/ARTIST-PROFILE.md) before starting any new track.
 
