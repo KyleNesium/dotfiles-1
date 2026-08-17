@@ -185,3 +185,17 @@ export NVM_DIR="$HOME/.nvm"
 
 # added by travis gem
 [ ! -s ~/.travis/travis.sh ] || source ~/.travis/travis.sh
+
+# claude-mem worker. Resolve the plugin version at call time, not install time:
+# the cache path is versioned, so a pinned one breaks on the next plugin upgrade
+# — and it fails as "Claude is slow" (hooks block ~60s on a dead worker) rather
+# than as a missing command.
+claude-mem() {
+  local worker
+  worker=$(ls -d "$HOME"/.claude/plugins/cache/thedotmack/claude-mem/*/scripts/worker-service.cjs 2>/dev/null | sort -V | tail -1)
+  if [ -z "$worker" ]; then
+    echo "claude-mem: worker not found under ~/.claude/plugins/cache/thedotmack/claude-mem/" >&2
+    return 1
+  fi
+  bun "$worker" "$@"
+}
